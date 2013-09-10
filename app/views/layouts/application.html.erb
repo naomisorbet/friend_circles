@@ -9,7 +9,10 @@
 <body>
 	
 	<%= render "sessions/logout_button" if current_user %>
-
+	<% if flash[:error] %>
+		<p><%= flash[:error] %></p>
+	<% end %>
+	
 <%= yield %>
 
 </body>

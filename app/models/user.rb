@@ -11,12 +11,20 @@ class User < ActiveRecord::Base
     BCrypt::Password.new(self.password_digest).is_password?(password)
   end
   
-  def self.generate_session_token
+  def self.generate_token
     SecureRandom::urlsafe_base64(32)
   end
   
   def reset_session_token!
-    self.session_token = self.class.generate_session_token
+    self.session_token = self.class.generate_token
     self.save!
+  end
+  
+  def send_password_reset
+    self.password_reset_token = self.class.generate_token
+    self.password_reset_sent_at = Time.zone.now
+    
+    self.save!
+    UserMailer.password_reset(self).deliver
   end
 end
