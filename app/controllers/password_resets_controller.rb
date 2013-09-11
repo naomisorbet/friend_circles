@@ -20,6 +20,7 @@ class PasswordResetsController < ApplicationController
   
   def update
     user = User.find_by_password_reset_token!(params[:id])
+    redirect_to new_password_reset_url if user.nil?
     if !passwords_match?(params[:password], params[:passwordconfirm])
       flash[:error] = "passwords don't match"
       redirect_to edit_password_reset_url
@@ -27,7 +28,9 @@ class PasswordResetsController < ApplicationController
       flash[:error] = "time limit has expired"
       redirect_to new_password_reset_url
     elsif user.update_attributes(:password => params[:password])
+      user.password_reset_token = user.class.generate_token
       redirect_to new_session_url
+      user.save!
     else
       redirect_to edit_password_reset_url
     end

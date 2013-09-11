@@ -1,7 +1,11 @@
 class User < ActiveRecord::Base
-  attr_accessible :email, :password_digest, :session_token, :password
+  attr_accessible :email, :password_digest, :session_token, :password, :password_reset_token
   validates :email, :password_digest, :presence => true
   validates :email, :uniqueness => true
+  
+  has_many :friend_circle_memberships
+  
+  has_many :friend_circles
   
   def password=(password)
     self.password_digest = BCrypt::Password.create(password)

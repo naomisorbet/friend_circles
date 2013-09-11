@@ -7,7 +7,6 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_user
 
-  
   def require_logged_in
     #check to see if theres a current user and if not redirect to sign in page
     redirect_to new_session_url unless current_user

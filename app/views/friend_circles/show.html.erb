@@ -1,0 +1,8 @@
+<h1><%= @friend_circle.name %></h1>
+
+<% @friend_circle.members.each do |member| %>
+
+	<p><%= member.email %></p>
+	<br>
+
+<% end %>
